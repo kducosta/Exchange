@@ -1,6 +1,7 @@
 namespace Exchange.Infrastructure.Data
 {
-    using Microsoft.AspNetCore.Identity;
+    using Exchange.Domain.Dtos;
+    using Exchange.Domain.Repository;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -8,23 +9,17 @@ namespace Exchange.Infrastructure.Data
     /// </summary>
     public class ExchangeDbInitializer : IDbInitializer
     {
-        private readonly ExchangeDbContext context;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UsersRepository usersRepository;
         private readonly ILogger<ExchangeDbInitializer> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExchangeDbInitializer"/> class.
         /// </summary>
-        /// <param name="context">The database context <see cref="ExchangeDbContext"/>.</param>
-        /// <param name="userManager">The <see cref="UserManager{IdentityUser}"/>.</param>
+        /// <param name="usersRepository">The <see cref="UsersRepository"/>.</param>
         /// <param name="logger">The <see cref="ILogger{ExchangeDbInitializer}"/>.</param>
-        public ExchangeDbInitializer(
-            ExchangeDbContext context,
-            UserManager<IdentityUser> userManager,
-            ILogger<ExchangeDbInitializer> logger)
+        public ExchangeDbInitializer(UsersRepository usersRepository, ILogger<ExchangeDbInitializer> logger)
         {
-            this.context = context;
-            this.userManager = userManager;
+            this.usersRepository = usersRepository;
             this.logger = logger;
         }
 
@@ -33,24 +28,23 @@ namespace Exchange.Infrastructure.Data
         /// </summary>
         public async void Initialize()
         {
-            var username = "admin";
-            await this.context.Database.EnsureCreatedAsync();
-
-            var admin = await this.userManager.FindByNameAsync(username);
+            const string username = "admin";
+            var admin = await this.usersRepository.FindByUserNameAsync(username);
 
             if (admin == null)
             {
                 this.logger.LogInformation("No admin user found in database. Creating admin user");
 
-                admin = new IdentityUser()
+                admin = new UserDto()
                 {
                     UserName = username,
                     Email = "admin@exchange.com",
-                    EmailConfirmed = true,
+                    Password = "Pw1@exchange",
                 };
 
-                var result = await this.userManager.CreateAsync(admin, "Pw1@exchange");
-                if (result.Succeeded)
+                admin = await this.usersRepository.CreateUserAsync(admin);
+
+                if (admin != null)
                 {
                     this.logger.LogInformation("Admin user created");
                 }

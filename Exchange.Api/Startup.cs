@@ -5,6 +5,7 @@
 namespace Exchange.Api
 {
     using System.Text;
+    using Exchange.Domain.Repository;
     using Exchange.Infrastructure.Data;
     using Exchange.Services;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -76,6 +77,7 @@ namespace Exchange.Api
             });
 
             services.AddScoped<AuthenticationService>();
+            services.AddScoped<UsersRepository>();
             services.AddScoped<IDbInitializer, ExchangeDbInitializer>();
 
             services.AddSwaggerGen(c =>

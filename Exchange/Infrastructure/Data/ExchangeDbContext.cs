@@ -4,17 +4,16 @@
 
 namespace Exchange.Infrastructure.Data
 {
-    using Exchange.Domain.Model;
+    using Exchange.Domain.Models;
     using IdentityServer4.EntityFramework.Options;
     using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Main database context.
     /// </summary>
-    public class ExchangeDbContext : ApiAuthorizationDbContext<IdentityUser>
+    public class ExchangeDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExchangeDbContext"/> class.

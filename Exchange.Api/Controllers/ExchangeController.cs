@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-
 namespace Exchange.Api.Controllers
 {
     using System.Threading.Tasks;
@@ -7,6 +5,7 @@ namespace Exchange.Api.Controllers
     using Exchange.Domain.Dtos;
     using Exchange.Domain.Repositories;
     using Exchange.Services;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
@@ -31,7 +30,21 @@ namespace Exchange.Api.Controllers
                 return this.BadRequest("Parameters \"from\" and \"to\" must be defined");
             }
 
-            var conversion = await this.exchangeService.Convert(request.From, request.To, request.Amount);
+            CurrencyConversionDto conversion;
+
+            try
+            {
+                conversion = await this.exchangeService.Convert(request.From, request.To, request.Amount);
+            }
+            catch (ExchangeRatesApiException e)
+            {
+                if (e.StatusCode != 0)
+                {
+                    return this.StatusCode((int)e.StatusCode, e.Message);
+                }
+
+                return this.BadRequest(e.Message);
+            }
 
             return await this.currencyConversionRepository.CreateHistory(conversion, this.User.Identity?.Name);
         }

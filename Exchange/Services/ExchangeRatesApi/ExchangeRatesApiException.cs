@@ -18,10 +18,10 @@ namespace Exchange.Services
         public ExchangeRatesApiException(HttpStatusCode statusCode, string message)
             : base(message)
         {
-            this.StatusCodeCode = statusCode;
+            this.StatusCode = statusCode;
         }
 
-        public HttpStatusCode StatusCodeCode { get; }
+        public HttpStatusCode StatusCode { get; }
 
     }
 }

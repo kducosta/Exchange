@@ -12,6 +12,7 @@ namespace Exchange.Services
     using System.Text;
     using System.Threading.Tasks;
     using Exchange.Domain.Dtos;
+    using Exchange.Domain.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -23,7 +24,7 @@ namespace Exchange.Services
     public class AuthenticationService
     {
         private readonly IConfiguration configuration;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<AuthenticationService> logger;
 
         /// <summary>
@@ -32,7 +33,7 @@ namespace Exchange.Services
         /// <param name="configuration">The <see cref="IConfiguration"/>.</param>
         /// <param name="logger">The <see cref="ILogger{AuthenticationService}"/>.</param>
         /// <param name="userManager">The <see cref="UserManager{IdentityUser}"/>.</param>
-        public AuthenticationService(IConfiguration configuration, ILogger<AuthenticationService> logger, UserManager<IdentityUser> userManager)
+        public AuthenticationService(IConfiguration configuration, ILogger<AuthenticationService> logger, UserManager<ApplicationUser> userManager)
         {
             this.configuration = configuration;
             this.userManager = userManager;

@@ -6,7 +6,6 @@ namespace Exchange.Domain.Models
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using Microsoft.AspNetCore.Identity;
 
     /// <summary>
     /// Represent a currency conversion transaction.

@@ -8,13 +8,12 @@ namespace Exchange.Domain.Repositories
     using System.Linq;
     using System.Threading.Tasks;
     using Exchange.Domain.Dtos;
-    using Exchange.Domain.Model;
+    using Exchange.Domain.Models;
     using Exchange.Infrastructure.Data;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    /// The Currency Conversion repository
+    /// The Currency Conversion repository.
     /// </summary>
     public class CurrencyConversionRepository
     {
@@ -60,23 +59,26 @@ namespace Exchange.Domain.Repositories
         /// <summary>
         /// Get all conversion transactions made by a user.
         /// </summary>
-        /// <param name="userId">The <see cref="IdentityUser"/>.</param>
+        /// <param name="userId">The <see cref="ApplicationUser"/> Id.</param>
         /// <returns>List of <see cref="CurrencyConversionDto"/>.</returns>
-        public async Task<List<CurrencyConversionDto>> GetUserHistory(string userId)
+        public async Task<List<CurrencyConversionDto>> GetUserConversionHistory(string userId)
         {
-            var user = await this.dbContext.Users.FindAsync(userId);
-            return await this.dbContext.CurrencyConversions
-                .Select(conversion => new CurrencyConversionDto()
-                {
-                    Id = conversion.Id,
-                    UserId = user.Id,
-                    OriginCurrency = conversion.OriginCurrency,
-                    DestinationCurrency = conversion.DestinationCurrency,
-                    OriginAmount = conversion.Amount,
-                    DestinationAmount = conversion.Amount * conversion.Rate,
-                    Rate = conversion.Rate,
-                    ConversionTime = conversion.ConversionTime,
-                }).ToListAsync();
+            var user = await this.dbContext.Users
+                .Include(u => u.CurrencyConversions)
+                .Where(u => u.Id == userId)
+                .FirstAsync();
+
+            return user?.CurrencyConversions.Select(conversion => new CurrencyConversionDto()
+            {
+                Id = conversion.Id,
+                UserId = user.Id,
+                OriginCurrency = conversion.OriginCurrency,
+                DestinationCurrency = conversion.DestinationCurrency,
+                OriginAmount = conversion.Amount,
+                DestinationAmount = conversion.Amount * conversion.Rate,
+                Rate = conversion.Rate,
+                ConversionTime = conversion.ConversionTime,
+            }).ToList();
         }
     }
 }

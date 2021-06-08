@@ -4,6 +4,7 @@ namespace Exchange.Domain.Repositories
     using System.Linq;
     using System.Threading.Tasks;
     using Exchange.Domain.Dtos;
+    using Exchange.Domain.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
@@ -12,13 +13,13 @@ namespace Exchange.Domain.Repositories
     /// </summary>
     public class UsersRepository
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersRepository"/> class.
         /// </summary>
-        /// <param name="userManager">The <see cref="UserManager{IdentityUser}"/>.</param>
-        public UsersRepository(UserManager<IdentityUser> userManager)
+        /// <param name="userManager">The <see cref="UserManager{ApplicationUser}"/>.</param>
+        public UsersRepository(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }
@@ -63,14 +64,14 @@ namespace Exchange.Domain.Repositories
         /// <returns>The new user created or null if failed.</returns>
         public async Task<UserDto> CreateUserAsync(UserDto user)
         {
-            var identityUser = new IdentityUser()
+            var appUser = new ApplicationUser()
             {
                 UserName = user.UserName,
                 Email = user.Email,
             };
 
-            var result = await this.userManager.CreateAsync(identityUser, user.Password);
-            return result.Succeeded ? ConvertToDto(identityUser) : null;
+            var result = await this.userManager.CreateAsync(appUser, user.Password);
+            return result.Succeeded ? ConvertToDto(appUser) : null;
         }
 
         /// <summary>
@@ -79,12 +80,12 @@ namespace Exchange.Domain.Repositories
         /// <param name="user">Data to update the user.</param>
         public async void UpdateAsync(UserDto user)
         {
-            var identityUser = await this.userManager.FindByIdAsync(user.Id);
-            if (identityUser.UserName != user.UserName || identityUser.Email != user.Email)
+            var appUser = await this.userManager.FindByIdAsync(user.Id);
+            if (appUser.UserName != user.UserName || appUser.Email != user.Email)
             {
-                identityUser.UserName = user.UserName;
-                identityUser.Email = user.Email;
-                await this.userManager.UpdateAsync(identityUser);
+                appUser.UserName = user.UserName;
+                appUser.Email = user.Email;
+                await this.userManager.UpdateAsync(appUser);
             }
         }
 
@@ -112,7 +113,7 @@ namespace Exchange.Domain.Repositories
         /// </summary>
         /// <param name="user">User to be converted.</param>
         /// <returns>The <see cref="UserDto"/>.</returns>
-        private static UserDto ConvertToDto(IdentityUser user)
+        private static UserDto ConvertToDto(ApplicationUser user)
         {
             return new ()
             {

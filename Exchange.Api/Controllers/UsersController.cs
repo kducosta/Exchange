@@ -22,15 +22,18 @@ namespace Exchange.Api.Controllers
     public class UsersController : Controller
     {
         private readonly UsersRepository usersRepository;
+        private readonly CurrencyConversionRepository currencyConversionRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         /// <param name="usersRepository">The <see cref="usersRepository"/>.</param>
         /// <exception cref="ArgumentNullException">Throws if mediator is null.</exception>
-        public UsersController(UsersRepository usersRepository)
+        public UsersController(UsersRepository usersRepository, CurrencyConversionRepository currencyConversionRepository)
         {
             this.usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
+            this.currencyConversionRepository = currencyConversionRepository ?? 
+                                                throw new ArgumentNullException(nameof(currencyConversionRepository));
         }
 
         /// <summary>
@@ -59,6 +62,24 @@ namespace Exchange.Api.Controllers
             }
 
             return user;
+        }
+
+        /// <summary>
+        /// Get a user by Id.
+        /// </summary>
+        /// <param name="id">The user id.</param>
+        /// <returns>The <see cref="GetUserConversions"/> or 404 if not found.</returns>
+        [HttpGet("{id}/conversions")]
+        public async Task<ActionResult<List<CurrencyConversionDto>>> GetUserConversions(string id)
+        {
+            var history = await this.currencyConversionRepository.GetUserConversionHistory(id);
+
+            if (history == null)
+            {
+                return this.NotFound();
+            }
+
+            return history;
         }
 
         /// <summary>

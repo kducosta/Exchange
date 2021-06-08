@@ -2,6 +2,8 @@
 // Copyright (c) github.com/edu_costa. All rights reserved.
 // </copyright>
 
+using Exchange.Domain.Models;
+
 namespace Exchange.Api
 {
     using System.Text;
@@ -55,7 +57,7 @@ namespace Exchange.Api
                     assembly => assembly.MigrationsAssembly(typeof(ExchangeDbContext).Assembly.FullName));
             });
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ExchangeDbContext>()
                 .AddDefaultTokenProviders();
 

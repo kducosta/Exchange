@@ -4,13 +4,18 @@
 
 namespace Exchange.Api
 {
+    using System.Text;
     using Exchange.Infrastructure.Data;
+    using Exchange.Services;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
     using Microsoft.OpenApi.Models;
 
     /// <summary>
@@ -47,6 +52,32 @@ namespace Exchange.Api
                     assembly => assembly.MigrationsAssembly(typeof(ExchangeDbContext).Assembly.FullName));
             });
 
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ExchangeDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidAudience = this.Configuration["JWT:ValidAudience"],
+                    ValidIssuer = this.Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["JWT:Secret"])),
+                };
+            });
+
+            services.AddScoped<AuthenticationService>();
+            services.AddScoped<IDbInitializer, ExchangeDbInitializer>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Exchange.Api", Version = "v1" });
@@ -58,7 +89,8 @@ namespace Exchange.Api
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/>.</param>
         /// <param name="env">The <see cref="IWebHostEnvironment"/>.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="dbInitializer">The <see cref="IDbInitializer"/>.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -71,7 +103,10 @@ namespace Exchange.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            dbInitializer.Initialize();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

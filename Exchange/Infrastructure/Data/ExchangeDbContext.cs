@@ -1,4 +1,4 @@
-// <copyright file="Infrastructure/Data/ExchangeDbContext.cs" company="github.com/edu_costa">
+// <copyright file="ExchangeDbContext.cs" company="github.com/edu_costa">
 // Copyright (c) github.com/edu_costa. All rights reserved.
 // </copyright>
 

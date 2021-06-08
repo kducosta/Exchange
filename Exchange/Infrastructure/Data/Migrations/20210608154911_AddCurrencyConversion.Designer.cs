@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Exchange.Migrations
 {
     [DbContext(typeof(ExchangeDbContext))]
-    [Migration("20210608154911_AddCurrencyConvertion")]
-    partial class AddCurrencyConvertion
+    [Migration("20210608154911_AddCurrencyConversion")]
+    partial class AddCurrencyConversion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

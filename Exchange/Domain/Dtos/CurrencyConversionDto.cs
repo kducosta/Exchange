@@ -34,17 +34,17 @@ namespace Exchange.Domain.Dtos
         /// <summary>
         /// Gets or Sets the amount of money to convert.
         /// </summary>
-        public double OriginAmount { get; set; }
+        public float OriginAmount { get; set; }
 
         /// <summary>
         /// Gets or Sets the amount of money converted to destination currency.
         /// </summary>
-        public double DestinationAmount { get; set; }
+        public float DestinationAmount { get; set; }
 
         /// <summary>
         /// Gets or Sets the rate used in conversion.
         /// </summary>
-        public double Rate { get; set; }
+        public float Rate { get; set; }
 
         /// <summary>
         /// Gets or Sets when the conversion happened.

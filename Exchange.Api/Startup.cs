@@ -46,6 +46,8 @@ namespace Exchange.Api
         {
             services.AddControllers();
 
+            services.AddHttpClient();
+
             services.AddDbContext<ExchangeDbContext>(options =>
             {
                 options.UseSqlite(
@@ -78,6 +80,8 @@ namespace Exchange.Api
 
             services.AddScoped<AuthenticationService>();
             services.AddScoped<UsersRepository>();
+            services.AddScoped<CurrencyConversionRepository>();
+            services.AddScoped<ExchangeRatesApiService>();
             services.AddScoped<IDbInitializer, ExchangeDbInitializer>();
 
             services.AddSwaggerGen(c =>

@@ -17,6 +17,6 @@ namespace Exchange.Services
         /// <summary>
         /// Gets the conversion rates.
         /// </summary>
-        public Dictionary<string, double> Rates { get; init; }
+        public Dictionary<string, float> Rates { get; init; }
     }
 }

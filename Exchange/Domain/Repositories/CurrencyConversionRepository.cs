@@ -33,10 +33,11 @@ namespace Exchange.Domain.Repositories
         /// Registry a currency conversion transaction.
         /// </summary>
         /// <param name="conversion">Conversion data.</param>
+        /// <param name="username">Requester username.</param>
         /// <returns>The new instance or null if fails.</returns>
-        public async Task<CurrencyConversionDto> CreateHistory(CurrencyConversionDto conversion)
+        public async Task<CurrencyConversionDto> CreateHistory(CurrencyConversionDto conversion, string username)
         {
-            var user = await this.dbContext.Users.FindAsync(conversion.UserId);
+            var user = await this.dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
             var newConversion = new CurrencyConversion()
             {
@@ -51,7 +52,8 @@ namespace Exchange.Domain.Repositories
             await this.dbContext.CurrencyConversions.AddAsync(newConversion);
             var result = await this.dbContext.SaveChangesAsync();
 
-            conversion.Id = conversion.Id;
+            conversion.Id = newConversion.Id;
+            conversion.UserId = user.Id;
             return result > 0 ? conversion : null;
         }
 

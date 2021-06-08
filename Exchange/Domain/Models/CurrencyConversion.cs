@@ -1,6 +1,11 @@
-namespace Exchange.Domain.Model
+// <copyright file="CurrencyConversion.cs" company="github.com/edu_costa">
+// Copyright (c) github.com/edu_costa. All rights reserved.
+// </copyright>
+
+namespace Exchange.Domain.Models
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
 
     /// <summary>
@@ -16,31 +21,37 @@ namespace Exchange.Domain.Model
         /// <summary>
         /// Gets or Sets the user who requested the conversion.
         /// </summary>
-        public IdentityUser User { get; set; }
+        [Required]
+        public ApplicationUser User { get; set; }
 
         /// <summary>
         /// Gets or Sets the origin currency.
         /// </summary>
+        [Required]
         public string OriginCurrency { get; set; }
 
         /// <summary>
         /// Gets or Sets the destination currency.
         /// </summary>
+        [Required]
         public string DestinationCurrency { get; set; }
 
         /// <summary>
         /// Gets or Sets the amount of money to convert.
         /// </summary>
-        public double Amount { get; set; }
+        [Required]
+        public float Amount { get; set; }
 
         /// <summary>
         /// Gets or Sets the rate used in conversion.
         /// </summary>
-        public double Rate { get; set; }
+        [Required]
+        public float Rate { get; set; }
 
         /// <summary>
         /// Gets or Sets when the conversion happened.
         /// </summary>
+        [Required]
         public DateTime ConversionTime { get; set; }
     }
 }

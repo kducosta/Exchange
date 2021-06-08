@@ -1,7 +1,7 @@
 namespace Exchange.Infrastructure.Data
 {
     using Exchange.Domain.Dtos;
-    using Exchange.Domain.Repository;
+    using Exchange.Domain.Repositories;
     using Microsoft.Extensions.Logging;
 
     /// <summary>

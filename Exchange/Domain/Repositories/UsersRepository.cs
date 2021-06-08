@@ -1,4 +1,4 @@
-namespace Exchange.Domain.Repository
+namespace Exchange.Domain.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -8,7 +8,7 @@ namespace Exchange.Domain.Repository
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    /// The User Repository
+    /// The User Repository.
     /// </summary>
     public class UsersRepository
     {
@@ -77,7 +77,7 @@ namespace Exchange.Domain.Repository
         /// Update a user.
         /// </summary>
         /// <param name="user">Data to update the user.</param>
-        public async Task UpdateAsync(UserDto user)
+        public async void UpdateAsync(UserDto user)
         {
             var identityUser = await this.userManager.FindByIdAsync(user.Id);
             if (identityUser.UserName != user.UserName || identityUser.Email != user.Email)

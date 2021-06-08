@@ -8,7 +8,7 @@ namespace Exchange.Api.Controllers
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Exchange.Domain.Dtos;
-    using Exchange.Domain.Repository;
+    using Exchange.Domain.Repositories;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
@@ -89,7 +89,7 @@ namespace Exchange.Api.Controllers
 
             try
             {
-                await this.usersRepository.UpdateAsync(user);
+                this.usersRepository.UpdateAsync(user);
             }
             catch (DbUpdateConcurrencyException)
             {

@@ -5,7 +5,7 @@
 namespace Exchange.Api
 {
     using System.Text;
-    using Exchange.Domain.Repository;
+    using Exchange.Domain.Repositories;
     using Exchange.Infrastructure.Data;
     using Exchange.Services;
     using Microsoft.AspNetCore.Authentication.JwtBearer;

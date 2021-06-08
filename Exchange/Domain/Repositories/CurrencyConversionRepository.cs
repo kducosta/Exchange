@@ -2,7 +2,7 @@
 // Copyright (c) github.com/edu_costa. All rights reserved.
 // </copyright>
 
-namespace Exchange.Domain.Repository
+namespace Exchange.Domain.Repositories
 {
     using System.Collections.Generic;
     using System.Linq;

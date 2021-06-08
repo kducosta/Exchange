@@ -4,6 +4,7 @@
 
 namespace Exchange.Infrastructure.Data
 {
+    using Exchange.Domain.Model;
     using IdentityServer4.EntityFramework.Options;
     using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
     using Microsoft.AspNetCore.Identity;
@@ -26,5 +27,10 @@ namespace Exchange.Infrastructure.Data
             : base(options, operationalStoreOptions)
         {
         }
+
+        /// <summary>
+        /// Gets or Sets the Currency Conversions Data Set.
+        /// </summary>
+        public virtual DbSet<CurrencyConversion> CurrencyConversions { get; set; }
     }
 }

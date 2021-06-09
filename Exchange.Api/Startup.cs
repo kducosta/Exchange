@@ -2,11 +2,13 @@
 // Copyright (c) github.com/edu_costa. All rights reserved.
 // </copyright>
 
-using Exchange.Domain.Models;
-
 namespace Exchange.Api
 {
+    using System;
+    using System.IO;
+    using System.Reflection;
     using System.Text;
+    using Exchange.Domain.Models;
     using Exchange.Domain.Repositories;
     using Exchange.Infrastructure.Data;
     using Exchange.Services;
@@ -88,7 +90,11 @@ namespace Exchange.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Exchange.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Exchange API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
         }
 

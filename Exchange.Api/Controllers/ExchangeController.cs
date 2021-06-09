@@ -1,3 +1,7 @@
+// <copyright file="ExchangeController.cs" company="github.com/edu_costa">
+// Copyright (c) github.com/edu_costa. All rights reserved.
+// </copyright>
+
 namespace Exchange.Api.Controllers
 {
     using System.Threading.Tasks;
@@ -8,6 +12,9 @@ namespace Exchange.Api.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    /// <summary>
+    /// Represents currency exchange endpoint controller.
+    /// </summary>
     [Authorize]
     [ApiController]
     [Route("/api/v1/[controller]")]
@@ -16,20 +23,25 @@ namespace Exchange.Api.Controllers
         private readonly ExchangeRatesApiService exchangeService;
         private readonly CurrencyConversionRepository currencyConversionRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExchangeController"/> class.
+        /// </summary>
+        /// <param name="exchangeService">The <see cref="ExchangeRatesApiService"/>.</param>
+        /// <param name="currencyConversionRepository">The <see cref="currencyConversionRepository"/>.</param>
         public ExchangeController(ExchangeRatesApiService exchangeService, CurrencyConversionRepository currencyConversionRepository)
         {
             this.exchangeService = exchangeService;
             this.currencyConversionRepository = currencyConversionRepository;
         }
 
+        /// <summary>
+        /// Converts a amount of money from a currency to another.
+        /// </summary>
+        /// <param name="request">The query params/>.</param>
+        /// <returns>A <see cref="CurrencyConversionDto"/> with the converted amount.</returns>
         [HttpGet]
         public async Task<ActionResult<CurrencyConversionDto>> Index([FromQuery] ConvertRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.From) || string.IsNullOrWhiteSpace(request.To))
-            {
-                return this.BadRequest("Parameters \"from\" and \"to\" must be defined");
-            }
-
             CurrencyConversionDto conversion;
 
             try

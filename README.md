@@ -34,17 +34,16 @@ Os controladores são implementados ASP.Net Core e gera a documentação da API 
 Exchange está implentado em .Net Core (https://dotnet.microsoft.com/download), com o framework instalado, e na pasta da soluction execute:
 
 Baixa as dependências no NuGet
-´´´
+```console
 dotnet restore
-´´´
-
+```
 Execute as migrações do banco de dados:
-´´´
+```console
 dotnet ef database update --project ./Exchange/Exchange.csproj --startup-project ./Exchange.Api/Exchange.Api.csproj
-´´´
+```
 
 Execute o projeto:
 
-´´´
+```console
 dotnet ef database update --project ./Exchange.Api/Exchange.Api.csproj
-´´´
+```

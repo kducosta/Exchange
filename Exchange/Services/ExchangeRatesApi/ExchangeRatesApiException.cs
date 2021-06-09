@@ -10,7 +10,7 @@ namespace Exchange.Services
         {
         }
 
-        public ExchangeRatesApiException(string message, Exception e)
+        public ExchangeRatesApiException(HttpStatusCode? httpStatusCode, string message, Exception e)
             : base(message, e)
         {
         }

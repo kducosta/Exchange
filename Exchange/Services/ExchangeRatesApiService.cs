@@ -40,56 +40,9 @@ namespace Exchange.Services
         }
 
         /// <summary>
-        /// Exchange Rates Api Access Key.
+        /// Gets Exchange Rates Api Access Key.
         /// </summary>
         private string AccessKey { get; }
-
-        /// <summary>
-        /// Request current to Exchange Rates API web service.
-        /// </summary>
-        /// <returns>The <see cref="ExchangeRateApiResponse"/>.</returns>
-        /// <exception cref="ExchangeRatesApiException">
-        /// Throws when no access key or api response with no success response.
-        /// </exception>
-        private async Task<ExchangeRateApiResponse> RequestApiRates()
-        {
-            this.logger.LogInformation("Requesting Rates to Exchange Rates API");
-
-            if (this.AccessKey == null)
-            {
-                this.logger.LogError("No access key configured");
-                throw new ExchangeRatesApiException("No Exchange Rates Api access key provided by configuration");
-            }
-
-            var httpClient = this.httpClientFactory.CreateClient();
-            var url = $"http://api.exchangeratesapi.io/v1/latest?access_key={this.AccessKey}&base=eur";
-            HttpResponseMessage response;
-
-            try
-            {
-                response = await httpClient.GetAsync(url);
-            }
-            catch (HttpRequestException e)
-            {
-                throw new ExchangeRatesApiException("Failed to request Exchange Rates API", e);
-            }
-
-            if (!response.IsSuccessStatusCode)
-            {
-                this.logger.LogError(
-                    "Exchange Rates API response with error code {StatusCode}: {Message}",
-                    response.StatusCode,
-                    response.ReasonPhrase);
-
-                throw new ExchangeRatesApiException(
-                    response.StatusCode,
-                    $"Error response from Exchange Rates API: {response.ReasonPhrase}");
-            }
-
-            var deserializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var json = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<ExchangeRateApiResponse>(json, deserializerOptions);
-        }
 
         /// <summary>
         /// Converts a amount of money from origin to destination currency.
@@ -124,6 +77,53 @@ namespace Exchange.Services
                 Rate = rate,
                 ConversionTime = DateTime.UtcNow,
             };
+        }
+
+        /// <summary>
+        /// Request current to Exchange Rates API web service.
+        /// </summary>
+        /// <returns>The <see cref="ExchangeRateApiResponse"/>.</returns>
+        /// <exception cref="ExchangeRatesApiException">
+        /// Throws when no access key or api response with no success response.
+        /// </exception>
+        private async Task<ExchangeRateApiResponse> RequestApiRates()
+        {
+            this.logger.LogInformation("Requesting Rates to Exchange Rates API");
+
+            if (this.AccessKey == null)
+            {
+                this.logger.LogError("No access key configured");
+                throw new ExchangeRatesApiException("No Exchange Rates Api access key provided by configuration");
+            }
+
+            var httpClient = this.httpClientFactory.CreateClient();
+            var url = $"https://api.exchangeratesapi.io/v1/latest?access_key={this.AccessKey}&base=eur";
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await httpClient.GetAsync(url);
+            }
+            catch (HttpRequestException e)
+            {
+                throw new ExchangeRatesApiException(e.StatusCode, "Failed to request Exchange Rates API", e);
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                this.logger.LogError(
+                    "Exchange Rates API response with error code {StatusCode}: {Message}",
+                    response.StatusCode,
+                    response.ReasonPhrase);
+
+                throw new ExchangeRatesApiException(
+                    response.StatusCode,
+                    $"Error response from Exchange Rates API: {response.ReasonPhrase}");
+            }
+
+            var deserializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            var json = await response.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<ExchangeRateApiResponse>(json, deserializerOptions);
         }
     }
 }

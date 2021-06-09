@@ -5,6 +5,7 @@
 namespace Exchange.Domain.Dtos
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// DTO to render a conversion transaction.
@@ -19,39 +20,42 @@ namespace Exchange.Domain.Dtos
         /// <summary>
         /// Gets or Sets the id of the user who requested the conversion.
         /// </summary>
+        [Required]
         public string UserId { get; set; }
 
         /// <summary>
         /// Gets or Sets the origin currency.
         /// </summary>
+        [Required]
         public string OriginCurrency { get; set; }
 
         /// <summary>
         /// Gets or Sets the destination currency.
         /// </summary>
+        [Required]
         public string DestinationCurrency { get; set; }
 
         /// <summary>
         /// Gets or Sets the amount of money to convert.
         /// </summary>
+        [Required]
         public float OriginAmount { get; set; }
 
         /// <summary>
-        /// Gets or Sets the amount of money converted to destination currency.
+        /// Gets the amount of money converted to destination currency.
         /// </summary>
-        public float DestinationAmount
-        {
-            get { return this.OriginAmount * this.Rate; }
-        }
+        public float DestinationAmount => this.OriginAmount * this.Rate;
 
         /// <summary>
         /// Gets or Sets the rate used in conversion.
         /// </summary>
+        [Required]
         public float Rate { get; set; }
 
         /// <summary>
         /// Gets or Sets when the conversion happened.
         /// </summary>
+        [Required]
         public DateTime ConversionTime { get; set; }
     }
 }

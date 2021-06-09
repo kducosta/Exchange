@@ -1,5 +1,10 @@
+// <copyright file="UserDto.cs" company="github.com/edu_costa">
+// Copyright (c) github.com/edu_costa. All rights reserved.
+// </copyright>
+
 namespace Exchange.Domain.Dtos
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Text.Json.Serialization;
 
     /// <summary>
@@ -15,6 +20,7 @@ namespace Exchange.Domain.Dtos
         /// <summary>
         /// Gets or Sets username.
         /// </summary>
+        [Required]
         public string UserName { get; set; }
 
         /// <summary>

@@ -4,6 +4,8 @@
 
 namespace Exchange.Domain.Dtos
 {
+    using System.ComponentModel.DataAnnotations;
+
     /// <summary>
     /// The Login DTO to login request.
     /// </summary>
@@ -12,11 +14,13 @@ namespace Exchange.Domain.Dtos
         /// <summary>
         /// Gets or sets the UserName.
         /// </summary>
+        [Required]
         public string UserName { get; set; }
 
         /// <summary>
         /// Gets or sets the Password.
         /// </summary>
+        [Required]
         public string Password { get; set; }
     }
 }

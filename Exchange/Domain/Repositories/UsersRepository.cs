@@ -11,15 +11,15 @@ namespace Exchange.Domain.Repositories
     /// <summary>
     /// The User Repository.
     /// </summary>
-    public class UsersRepository
+    public class UsersesRepository : IUsersRepository
     {
         private readonly UserManager<ApplicationUser> userManager;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UsersRepository"/> class.
+        /// Initializes a new instance of the <see cref="UsersesRepository"/> class.
         /// </summary>
         /// <param name="userManager">The <see cref="UserManager{ApplicationUser}"/>.</param>
-        public UsersRepository(UserManager<ApplicationUser> userManager)
+        public UsersesRepository(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }

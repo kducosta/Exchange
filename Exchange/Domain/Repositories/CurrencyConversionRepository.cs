@@ -15,7 +15,7 @@ namespace Exchange.Domain.Repositories
     /// <summary>
     /// The Currency Conversion repository.
     /// </summary>
-    public class CurrencyConversionRepository
+    public class CurrencyConversionRepository : ICurrencyConversionRepository
     {
         private readonly ExchangeDbContext dbContext;
 
@@ -28,12 +28,7 @@ namespace Exchange.Domain.Repositories
             this.dbContext = dbContext;
         }
 
-        /// <summary>
-        /// Registry a currency conversion transaction.
-        /// </summary>
-        /// <param name="conversion">Conversion data.</param>
-        /// <param name="username">Requester username.</param>
-        /// <returns>The new instance or null if fails.</returns>
+        /// <inheritdoc />
         public async Task<CurrencyConversionDto> CreateHistory(CurrencyConversionDto conversion, string username)
         {
             var user = await this.dbContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
@@ -56,11 +51,7 @@ namespace Exchange.Domain.Repositories
             return result > 0 ? conversion : null;
         }
 
-        /// <summary>
-        /// Get all conversion transactions made by a user.
-        /// </summary>
-        /// <param name="userId">The <see cref="ApplicationUser"/> Id.</param>
-        /// <returns>List of <see cref="CurrencyConversionDto"/>.</returns>
+        /// <inheritdoc />
         public async Task<List<CurrencyConversionDto>> GetUserConversionHistory(string userId)
         {
             var user = await this.dbContext.Users

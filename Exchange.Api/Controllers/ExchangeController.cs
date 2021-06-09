@@ -20,15 +20,15 @@ namespace Exchange.Api.Controllers
     [Route("/api/v1/[controller]")]
     public class ExchangeController : Controller
     {
-        private readonly ExchangeRatesApiService exchangeService;
-        private readonly CurrencyConversionRepository currencyConversionRepository;
+        private readonly IExchangeService exchangeService;
+        private readonly ICurrencyConversionRepository currencyConversionRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExchangeController"/> class.
         /// </summary>
-        /// <param name="exchangeService">The <see cref="ExchangeRatesApiService"/>.</param>
-        /// <param name="currencyConversionRepository">The <see cref="currencyConversionRepository"/>.</param>
-        public ExchangeController(ExchangeRatesApiService exchangeService, CurrencyConversionRepository currencyConversionRepository)
+        /// <param name="exchangeService">The <see cref="IExchangeService"/>.</param>
+        /// <param name="currencyConversionRepository">The <see cref="ICurrencyConversionRepository"/>.</param>
+        public ExchangeController(IExchangeService exchangeService, ICurrencyConversionRepository currencyConversionRepository)
         {
             this.exchangeService = exchangeService;
             this.currencyConversionRepository = currencyConversionRepository;
@@ -40,7 +40,7 @@ namespace Exchange.Api.Controllers
         /// <param name="request">The query params/>.</param>
         /// <returns>A <see cref="CurrencyConversionDto"/> with the converted amount.</returns>
         [HttpGet]
-        public async Task<ActionResult<CurrencyConversionDto>> Index([FromQuery] ConvertRequest request)
+        public async Task<ActionResult<CurrencyConversionDto>> Convert([FromQuery] ConvertRequest request)
         {
             CurrencyConversionDto conversion;
 
@@ -58,7 +58,7 @@ namespace Exchange.Api.Controllers
                 return this.BadRequest(e.Message);
             }
 
-            return await this.currencyConversionRepository.CreateHistory(conversion, this.User.Identity?.Name);
+            return await this.currencyConversionRepository.CreateHistory(conversion, this.User?.Identity?.Name);
         }
     }
 }

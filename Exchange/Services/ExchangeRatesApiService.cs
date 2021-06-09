@@ -15,7 +15,7 @@ namespace Exchange.Services
     /// <summary>
     /// Exchange Rates Api remote service.
     /// </summary>
-    public class ExchangeRatesApiService
+    public class ExchangeRatesApiService : IExchangeService
     {
         private readonly ILogger<ExchangeRatesApiService> logger;
         private readonly IHttpClientFactory httpClientFactory;
@@ -44,13 +44,7 @@ namespace Exchange.Services
         /// </summary>
         private string AccessKey { get; }
 
-        /// <summary>
-        /// Converts a amount of money from origin to destination currency.
-        /// </summary>
-        /// <param name="originCurrency">The origin currency.</param>
-        /// <param name="destinationCurrency">The destination currency.</param>
-        /// <param name="amount">The amount, in origin currency, to be converted.</param>
-        /// <returns>A <see cref="CurrencyConversionDto"/> containing the transaction data.</returns>
+        /// <inheritdoc />
         /// <exception cref="ExchangeRatesApiException">Throws when at least one of the currencies is invalid.</exception>
         public async Task<CurrencyConversionDto> Convert(string originCurrency, string destinationCurrency, float amount)
         {

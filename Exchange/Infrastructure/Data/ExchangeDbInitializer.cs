@@ -9,15 +9,15 @@ namespace Exchange.Infrastructure.Data
     /// </summary>
     public class ExchangeDbInitializer : IDbInitializer
     {
-        private readonly UsersRepository usersRepository;
+        private readonly IUsersRepository usersRepository;
         private readonly ILogger<ExchangeDbInitializer> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExchangeDbInitializer"/> class.
         /// </summary>
-        /// <param name="usersRepository">The <see cref="UsersRepository"/>.</param>
+        /// <param name="usersRepository">The <see cref="UsersesRepository"/>.</param>
         /// <param name="logger">The <see cref="ILogger{ExchangeDbInitializer}"/>.</param>
-        public ExchangeDbInitializer(UsersRepository usersRepository, ILogger<ExchangeDbInitializer> logger)
+        public ExchangeDbInitializer(IUsersRepository usersRepository, ILogger<ExchangeDbInitializer> logger)
         {
             this.usersRepository = usersRepository;
             this.logger = logger;

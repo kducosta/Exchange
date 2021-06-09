@@ -82,10 +82,10 @@ namespace Exchange.Api
                 };
             });
 
-            services.AddScoped<AuthenticationService>();
-            services.AddScoped<UsersRepository>();
-            services.AddScoped<CurrencyConversionRepository>();
-            services.AddScoped<ExchangeRatesApiService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IUsersRepository, UsersesRepository>();
+            services.AddScoped<ICurrencyConversionRepository, CurrencyConversionRepository>();
+            services.AddScoped<IExchangeService, ExchangeRatesApiService>();
             services.AddScoped<IDbInitializer, ExchangeDbInitializer>();
 
             services.AddSwaggerGen(c =>

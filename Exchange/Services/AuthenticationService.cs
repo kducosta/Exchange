@@ -21,7 +21,7 @@ namespace Exchange.Services
     /// <summary>
     /// The Authentication Service.
     /// </summary>
-    public class AuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<AuthenticationService> logger;
@@ -50,11 +50,7 @@ namespace Exchange.Services
 
         private string ValidAudience { get; }
 
-        /// <summary>
-        /// Authenticate user in service.
-        /// </summary>
-        /// <param name="loginDto">The <see cref="LoginDto"/>.</param>
-        /// <returns>The user JWT or null if wrong inputs.</returns>
+        /// <inheritdoc />
         public async Task<JwtTokenDto> Authenticate([NotNull] LoginDto loginDto)
         {
             JwtTokenDto token = null;

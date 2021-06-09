@@ -21,18 +21,19 @@ namespace Exchange.Api.Controllers
     [Route("api/v1/[controller]")]
     public class UsersController : Controller
     {
-        private readonly UsersRepository usersRepository;
-        private readonly CurrencyConversionRepository currencyConversionRepository;
+        private readonly UsersesRepository _usersesRepository;
+        private readonly ICurrencyConversionRepository currencyConversionRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
-        /// <param name="usersRepository">The <see cref="usersRepository"/>.</param>
+        /// <param name="usersesRepository">The <see cref="_usersesRepository"/>.</param>
+        /// <param name="currencyConversionRepository">The <see cref="ICurrencyConversionRepository"/>.</param>
         /// <exception cref="ArgumentNullException">Throws if mediator is null.</exception>
-        public UsersController(UsersRepository usersRepository, CurrencyConversionRepository currencyConversionRepository)
+        public UsersController(UsersesRepository usersesRepository, ICurrencyConversionRepository currencyConversionRepository)
         {
-            this.usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
-            this.currencyConversionRepository = currencyConversionRepository ?? 
+            this._usersesRepository = usersesRepository ?? throw new ArgumentNullException(nameof(usersesRepository));
+            this.currencyConversionRepository = currencyConversionRepository ??
                                                 throw new ArgumentNullException(nameof(currencyConversionRepository));
         }
 
@@ -43,7 +44,7 @@ namespace Exchange.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetAll()
         {
-            return await this.usersRepository.ListAsync();
+            return await this._usersesRepository.ListAsync();
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Exchange.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> Get(string id)
         {
-            var user = await this.usersRepository.FindByIdAsync(id);
+            var user = await this._usersesRepository.FindByIdAsync(id);
 
             if (user == null)
             {
@@ -90,7 +91,7 @@ namespace Exchange.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDto>> Create(UserDto user)
         {
-            var newUser = await this.usersRepository.CreateUserAsync(user);
+            var newUser = await this._usersesRepository.CreateUserAsync(user);
             return this.CreatedAtAction("Get", new { id = newUser.Id }, newUser);
         }
 
@@ -110,11 +111,11 @@ namespace Exchange.Api.Controllers
 
             try
             {
-                this.usersRepository.UpdateAsync(user);
+                this._usersesRepository.UpdateAsync(user);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (await this.usersRepository.FindByIdAsync(id) != null)
+                if (await this._usersesRepository.FindByIdAsync(id) != null)
                 {
                     return this.NotFound();
                 }
@@ -133,13 +134,13 @@ namespace Exchange.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
-            var user = await this.usersRepository.FindByIdAsync(id);
+            var user = await this._usersesRepository.FindByIdAsync(id);
             if (user == null)
             {
                 return this.NotFound();
             }
 
-            await this.usersRepository.DeleteAsync(id);
+            await this._usersesRepository.DeleteAsync(id);
 
             return this.NoContent();
         }

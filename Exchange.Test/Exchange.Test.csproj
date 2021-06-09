@@ -35,6 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Exchange.Api\Exchange.Api.csproj" />
       <ProjectReference Include="..\Exchange\Exchange.csproj" />
     </ItemGroup>
 

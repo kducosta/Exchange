@@ -121,7 +121,6 @@ namespace Exchange.Services
                 OriginCurrency = originCurrency,
                 DestinationCurrency = destinationCurrency,
                 OriginAmount = amount,
-                DestinationAmount = amount * rate,
                 Rate = rate,
                 ConversionTime = DateTime.UtcNow,
             };

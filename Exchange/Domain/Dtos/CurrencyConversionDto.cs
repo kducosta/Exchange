@@ -39,7 +39,10 @@ namespace Exchange.Domain.Dtos
         /// <summary>
         /// Gets or Sets the amount of money converted to destination currency.
         /// </summary>
-        public float DestinationAmount { get; set; }
+        public float DestinationAmount
+        {
+            get { return this.OriginAmount * this.Rate; }
+        }
 
         /// <summary>
         /// Gets or Sets the rate used in conversion.

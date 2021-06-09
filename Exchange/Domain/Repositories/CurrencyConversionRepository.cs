@@ -75,7 +75,6 @@ namespace Exchange.Domain.Repositories
                 OriginCurrency = conversion.OriginCurrency,
                 DestinationCurrency = conversion.DestinationCurrency,
                 OriginAmount = conversion.Amount,
-                DestinationAmount = conversion.Amount * conversion.Rate,
                 Rate = conversion.Rate,
                 ConversionTime = conversion.ConversionTime,
             }).ToList();

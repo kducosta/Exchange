@@ -37,7 +37,7 @@ namespace Exchange.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var token = await this.authenticationService.Autheticate(loginDto);
+            var token = await this.authenticationService.Authenticate(loginDto);
 
             if (token == null)
             {

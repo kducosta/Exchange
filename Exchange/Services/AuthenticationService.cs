@@ -23,7 +23,6 @@ namespace Exchange.Services
     /// </summary>
     public class AuthenticationService
     {
-        private readonly IConfiguration configuration;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<AuthenticationService> logger;
 
@@ -35,26 +34,30 @@ namespace Exchange.Services
         /// <param name="userManager">The <see cref="UserManager{IdentityUser}"/>.</param>
         public AuthenticationService(IConfiguration configuration, ILogger<AuthenticationService> logger, UserManager<ApplicationUser> userManager)
         {
-            this.configuration = configuration;
             this.userManager = userManager;
             this.logger = logger;
+            this.JwtSecret = configuration["JWT:Secret"] ??
+                             throw new ArgumentNullException(nameof(configuration), "No JWT Secret defined");
+            this.ValidIssuer = configuration["JWT:ValidIssuer"] ??
+                               throw new ArgumentNullException(nameof(configuration), "No JWT Secret defined");
+            this.ValidAudience = configuration["JWT:ValidAudience"] ??
+                                 throw new ArgumentNullException(nameof(configuration), "No JWT Secret defined");
         }
+
+        private string JwtSecret { get; }
+
+        private string ValidIssuer { get; }
+
+        private string ValidAudience { get; }
 
         /// <summary>
         /// Authenticate user in service.
         /// </summary>
         /// <param name="loginDto">The <see cref="LoginDto"/>.</param>
         /// <returns>The user JWT or null if wrong inputs.</returns>
-        public async Task<JwtTokenDto> Autheticate([NotNull] LoginDto loginDto)
+        public async Task<JwtTokenDto> Authenticate([NotNull] LoginDto loginDto)
         {
             JwtTokenDto token = null;
-            var jwtSecret = this.configuration["JWT:Secret"];
-
-            if (jwtSecret == null)
-            {
-                this.logger.LogError("No JWT secret defined, users cannot authenticate");
-                return null;
-            }
 
             var user = await this.userManager.FindByNameAsync(loginDto.UserName);
 
@@ -66,11 +69,12 @@ namespace Exchange.Services
                     new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
-                var authSigninKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
+                var jwtSecret = Encoding.UTF8.GetBytes(this.JwtSecret);
+                var authSigninKey = new SymmetricSecurityKey(jwtSecret);
 
                 var jwtToken = new JwtSecurityToken(
-                    this.configuration["JWT:ValidIssuer"],
-                    this.configuration["JWT:ValidAudience"],
+                    this.ValidIssuer,
+                    this.ValidAudience,
                     expires: DateTime.Now.AddHours(3),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256));

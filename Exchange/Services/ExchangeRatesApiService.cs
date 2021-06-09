@@ -91,7 +91,7 @@ namespace Exchange.Services
             }
 
             var httpClient = this.httpClientFactory.CreateClient();
-            var url = $"https://api.exchangeratesapi.io/v1/latest?access_key={this.AccessKey}&base=eur";
+            var url = $"http://api.exchangeratesapi.io/v1/latest?access_key={this.AccessKey}&base=eur";
             HttpResponseMessage response;
 
             try

@@ -17,13 +17,13 @@ namespace Exchange.Api.Controllers
     [Route("/api/v1/[controller]")]
     public class AuthenticateController : Controller
     {
-        private readonly AuthenticationService authenticationService;
+        private readonly IAuthenticationService authenticationService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticateController"/> class.
         /// </summary>
         /// <param name="authenticationService">The <see cref="AuthenticationService"/>.</param>
-        public AuthenticateController(AuthenticationService authenticationService)
+        public AuthenticateController(IAuthenticationService authenticationService)
         {
             this.authenticationService = authenticationService;
         }

@@ -83,7 +83,7 @@ namespace Exchange.Api
             });
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IUsersRepository, UsersesRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<ICurrencyConversionRepository, CurrencyConversionRepository>();
             services.AddScoped<IExchangeService, ExchangeRatesApiService>();
             services.AddScoped<IDbInitializer, ExchangeDbInitializer>();

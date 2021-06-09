@@ -15,7 +15,7 @@ namespace Exchange.Infrastructure.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="ExchangeDbInitializer"/> class.
         /// </summary>
-        /// <param name="usersRepository">The <see cref="UsersesRepository"/>.</param>
+        /// <param name="usersRepository">The <see cref="UsersRepository"/>.</param>
         /// <param name="logger">The <see cref="ILogger{ExchangeDbInitializer}"/>.</param>
         public ExchangeDbInitializer(IUsersRepository usersRepository, ILogger<ExchangeDbInitializer> logger)
         {

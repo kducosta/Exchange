@@ -122,7 +122,7 @@ namespace Exchange.Test.Unit.Services
 
         private string GetServiceURL(string accessKey)
         {
-            return $"https://api.exchangeratesapi.io/v1/latest?access_key={accessKey}&base=eur";
+            return $"http://api.exchangeratesapi.io/v1/latest?access_key={accessKey}&base=eur";
         }
 
         private IConfiguration CreateConfiguration(string accessKey)

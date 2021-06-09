@@ -40,7 +40,7 @@ namespace Exchange.Api.Controllers
         /// <param name="request">The query params/>.</param>
         /// <returns>A <see cref="CurrencyConversionDto"/> with the converted amount.</returns>
         [HttpGet]
-        public async Task<ActionResult<CurrencyConversionDto>> Convert([FromQuery] ConvertRequest request)
+        public async Task<IActionResult> Convert([FromQuery] ConvertRequest request)
         {
             CurrencyConversionDto conversion;
 
@@ -58,7 +58,7 @@ namespace Exchange.Api.Controllers
                 return this.BadRequest(e.Message);
             }
 
-            return await this.currencyConversionRepository.CreateHistory(conversion, this.User?.Identity?.Name);
+            return this.Ok(await this.currencyConversionRepository.CreateHistory(conversion, this.User?.Identity?.Name));
         }
     }
 }
